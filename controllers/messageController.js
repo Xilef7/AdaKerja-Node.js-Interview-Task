@@ -1,7 +1,7 @@
 const eventLog = require('../models/eventLog');
 
 exports.getAllEvents = (req, res) => {
-    res.status(200).send(eventLog.getAllEvents());
+    res.status(200).json(eventLog.getAllEvents());
 };
 
 exports.getEvent = (req, res) => {
@@ -10,7 +10,7 @@ exports.getEvent = (req, res) => {
     event = eventLog.getEventById(messageId);
 
     if (event) {
-        res.status(200).send(event);
+        res.status(200).json(event);
     } else {
         res.sendStatus(404);
     }
