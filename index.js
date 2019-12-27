@@ -24,7 +24,7 @@ app.post('/webhook', (req, res) => {
             let webhook_event = entry.messaging[0];
             console.log(webhook_event);
 
-            handleMessage(webhook_event.sender.id, webhook_event.message);
+            handleEvent(webhook_event.sender.id, webhook_event);
         });
 
         res.status(200).send('EVENT_RECEIVED');
@@ -50,25 +50,25 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-function handleMessage(sender_psid, received_message) {
+function handleEvent(sender_psid, received_event) {
     if (USER_DATA[sender_psid]) {
         switch (USER_DATA[sender_psid].state) {
             case 1:
-                handleState1(sender_psid, received_message);
+                handleState1(sender_psid, received_event);
                 break;
             case 2:
-                handleState2(sender_psid, received_message);
+                handleState2(sender_psid, received_event);
                 break;
             case 3:
-                handleState3(sender_psid, received_message);
+                handleState3(sender_psid, received_event);
                 break;
         }
     } else {
-        handleInitialState(sender_psid, received_message);
+        handleInitialState(sender_psid, received_event);
     }
 }
 
-function handleInitialState(sender_psid, received_message) {
+function handleInitialState(sender_psid, received_event) {
     const response = {
         "text": `Hi! What is your first name?`
     };
@@ -80,8 +80,10 @@ function handleInitialState(sender_psid, received_message) {
     callSendAPI(sender_psid, response);
 }
 
-function handleState1(sender_psid, received_message) {
-    USER_DATA[sender_psid].firstName = received_message.text;
+function handleState1(sender_psid, received_event) {
+    if (!received_event.message) return;
+
+    USER_DATA[sender_psid].firstName = received_event.message.text;
 
     const response = {
         "text": `What is your birth date?`
@@ -92,11 +94,28 @@ function handleState1(sender_psid, received_message) {
     callSendAPI(sender_psid, response);
 }
 
-function handleState2(sender_psid, received_message) {
-    USER_DATA[sender_psid].birthDate = parseDate(received_message.text);
+function handleState2(sender_psid, received_event) {
+    if (!received_event.message) return;
+
+    USER_DATA[sender_psid].birthDate = parseDate(received_event.message.text);
 
     const response = {
-        "text": `Do you want to know how many days till your next birthday?`
+        "text": `Do you want to know how many days till your next birthday?`,
+        "quick_replies": [
+            {
+
+                "content_type": "text",
+                "title": "yes",
+                "payload": "yes",
+
+            },
+            {
+
+                "content_type": "text",
+                "title": "no",
+                "payload": "no",
+            }
+        ]
     };
 
     USER_DATA[sender_psid].state += 1;
@@ -110,10 +129,10 @@ function parseDate(dateString) {
     return new Date(year, month - 1, day);
 }
 
-function handleState3(sender_psid, received_message) {
+function handleState3(sender_psid, received_event) {
     let response;
 
-    if (received_message.text == 'yes') {
+    if (isRepliedYes(received_event)) {
         const now = new Date();
         now.setHours(0, 0, 0, 0);
 
@@ -138,6 +157,19 @@ function handleState3(sender_psid, received_message) {
     USER_DATA[sender_psid].state += 1;
 
     callSendAPI(sender_psid, response);
+}
+
+function isRepliedYes(received_event) {
+    if (received_event.message) {
+        const yesWords = ['yes', 'yeah', 'yup'];
+        const userAnswer = received_event.message.text;
+
+        return yesWords.includes(userAnswer)
+    } else if (received_event.quick_reply) {
+        const userAnswer = received_event.quick_reply.payload;
+
+        return userAnswer === 'yes';
+    }
 }
 
 function callSendAPI(sender_psid, response) {
