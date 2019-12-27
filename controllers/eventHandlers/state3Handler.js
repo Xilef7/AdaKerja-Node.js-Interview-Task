@@ -8,18 +8,7 @@ function handleEvent(sender_psid, received_event) {
     let response;
 
     if (isRepliedYes(received_event)) {
-
-        const now = new Date();
-        now.setHours(0, 0, 0, 0);
-
-        const nextBirthday = user.birthDate;
-
-        nextBirthday.setFullYear(now.getFullYear());
-        if (nextBirthday <= now) {
-            nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
-        }
-
-        const daysLeft = Math.round((nextBirthday - now) / (1000 * 60 * 60 * 24));
+        const daysLeft = calculateDaysLeftUntilNextBirthday(user.birthDate);
 
         response = {
             "text": `There are ${daysLeft} days left until your next birthday.`
@@ -46,6 +35,24 @@ function isRepliedYes(received_event) {
 
         return userAnswer === 'yes';
     }
+}
+
+function calculateDaysLeftUntilNextBirthday(birthDate) {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    const nextBirthday = new Date(birthDate);
+
+    nextBirthday.setFullYear(now.getFullYear());
+    if (nextBirthday <= now) {
+        nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+    }
+
+    return calculateDaysBetweenDate(now, nextBirthday);
+}
+
+function calculateDaysBetweenDate(earlierDate, laterDate) {
+    return Math.round((laterDate - earlierDate) / (1000 * 60 * 60 * 24));
 }
 
 module.exports = { handleEvent };
