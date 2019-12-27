@@ -13,7 +13,7 @@ function handleEvent(sender_psid, received_event) {
         "text": `What is your birth date?`
     };
 
-    user.state += 1;
+    user.state = 'BIRTH_DATE';
 
     callSendAPI(sender_psid, response);
 }

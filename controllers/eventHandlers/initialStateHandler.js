@@ -7,7 +7,7 @@ function handleEvent(sender_psid, received_event) {
         "text": `Hi! What is your first name?`
     };
 
-    userData.addNewUser(sender_psid);
+    userData.addNewUserData(sender_psid, { state: 'FIRST_NAME' });
 
     callSendAPI(sender_psid, response);
 }

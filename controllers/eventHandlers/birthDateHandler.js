@@ -28,7 +28,7 @@ function handleEvent(sender_psid, received_event) {
         ]
     };
 
-    user.state += 1;
+    user.state = 'NEXT_BIRTHDAY';
 
     callSendAPI(sender_psid, response);
 }

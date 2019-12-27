@@ -19,7 +19,7 @@ function handleEvent(sender_psid, received_event) {
         };
     }
 
-    user.state += 1;
+    user.state = 'END';
 
     callSendAPI(sender_psid, response);
 }

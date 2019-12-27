@@ -1,9 +1,7 @@
 const userData = {};
 
-function addNewUser(id) {
-    userData[id] = {
-        state: 1
-    };
+function addNewUserData(id, data) {
+    userData[id] = data;
 }
 
 function getUserDataById(id) {
@@ -11,6 +9,6 @@ function getUserDataById(id) {
 }
 
 module.exports = {
-    addNewUser,
+    addNewUserData,
     getUserDataById
 };
