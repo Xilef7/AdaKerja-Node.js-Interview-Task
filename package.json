@@ -1,0 +1,24 @@
+{
+  "name": "messenger-bot",
+  "version": "1.0.0",
+  "description": "AdaKerja's Node.js interview task",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xilef7/AdaKerja-Node.js-Interview-Task.git"
+  },
+  "keywords": [
+    "messenger",
+    "adakerja",
+    "interview"
+  ],
+  "author": "Felix Septianus Darmawan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Xilef7/AdaKerja-Node.js-Interview-Task/issues"
+  },
+  "homepage": "https://github.com/Xilef7/AdaKerja-Node.js-Interview-Task#readme"
+}
