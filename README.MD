@@ -5,7 +5,7 @@ This bot will do the following things:
 3. Ask whether you want to calculate how many days until your next birthday
 
 # Try the bot
-Go to [this page](m.me/110270583817741) to try this bot
+This bot has not been submitted to Facebook for approval. To try this bot, you should contact me to assign a tester role for your Facebook account. Then, go to [this page](m.me/110270583817741) to try the bot.
 
 # How to Run
 1. Setup your Facebook App using [this instruction](https://developers.facebook.com/docs/messenger-platform/getting-started/app-setup)
