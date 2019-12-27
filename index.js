@@ -10,6 +10,8 @@ const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 const USER_DATA = {};
 
+const EVENTS = [];
+
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 app.post('/webhook', (req, res) => {
@@ -25,6 +27,8 @@ app.post('/webhook', (req, res) => {
             console.log(webhook_event);
 
             handleEvent(webhook_event.sender.id, webhook_event);
+
+            EVENTS.push(webhook_event);
         });
 
         res.status(200).send('EVENT_RECEIVED');
@@ -47,6 +51,39 @@ app.get('/webhook', (req, res) => {
         } else {
             res.sendStatus(403);
         }
+    }
+});
+
+app.get('/messages', (req, res) => {
+    res.status(200).send(EVENTS);
+});
+
+app.get('/messages/:id', (req, res) => {
+    const messageId = req.params.id;
+
+    message = EVENTS.find(event => event.message.mid === messageId);
+
+    if (message) {
+        res.status(200).send(message);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+app.delete('/messages/:id', (req, res) => {
+    const messageId = req.params.id;
+
+    for (var i = 0; i < EVENTS.length; i++) {
+        if (EVENTS[i].message.mid === messageId) {
+            EVENTS.splice(i, 1);
+            break;
+        }
+    }
+
+    if (i === EVENTS.length) {
+        res.sendStatus(404);
+    } else {
+        res.sendStatus(204);
     }
 });
 
