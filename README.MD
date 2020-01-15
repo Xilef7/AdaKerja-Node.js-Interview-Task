@@ -18,7 +18,7 @@ This bot has not been submitted to Facebook for approval. To try this bot, you s
 VERIFY_TOKEN=<YOUR_VERIFY_TOKEN>
 PAGE_ACCESS_TOKEN=<YOUR_PAGE_ACCESS_TOKEN>
 ```
-3. Run `npm start`
+4. Run `npm start`
 
 # Test Script
 To run the test script, use the following commands:
